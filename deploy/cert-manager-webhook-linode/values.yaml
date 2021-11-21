@@ -7,7 +7,7 @@
 # This group name should be **unique**, hence using your own company's domain
 # here is recommended.
 api:
-  groupName: acme.slicen.me
+  groupName: acme.recsyslabs.com
 
 deployment:
   secretName: linode-credentials
