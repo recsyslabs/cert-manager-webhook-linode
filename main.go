@@ -148,8 +148,20 @@ func (c *linodeDNSProviderSolver) fetchZone(linodeClient *linodego.Client, domai
 
 // Returns the details of a given record entry in a given Linode DNS Manager zone, specified by the zone's ID and the record
 func (c *linodeDNSProviderSolver) fetchRecord(linodeClient *linodego.Client, zoneID int, entry string) (*linodego.DomainRecord, error) {
+
+	// filters by TXT and name
+	filter, err := json.Marshal(map[string]interface{}{
+		"name": entry,
+		"type": "TXT",
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	listOpts := linodego.NewListOptions(0, string(filter))
+
 	// List records in zone
-	records, err := linodeClient.ListDomainRecords(c.ctx, zoneID, nil)
+	records, err := linodeClient.ListDomainRecords(c.ctx, zoneID, listOpts)
 	if err != nil {
 		return nil, err
 	}
